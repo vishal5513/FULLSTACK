@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Available Books | Library</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 15px 30px;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Table Styling */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+
+    th {
+      background: #667eea;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+
+    tr:hover {
+      background: #e6e9ff;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #667eea;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: #5563d6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    Available Books
+  </div>
+
+  <div class="container">
+    <h2>Books Available in Library</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Book Name</th>
+          <th>Author</th>
+          <th>Copies</th>
+          <th>Shelf</th>
+        </tr>
+      </thead>
+      <tbody id="books"></tbody>
+    </table>
+
+    <button class="back-btn" onclick="goBack()">⬅ Back to Home</button>
+  </div>
+
+  <script>
+    fetch("http://localhost:5000/api/books")
+      .then(res => res.json())
+      .then(data => {
+        let rows = "";
+        data.forEach(b => {
+          rows += `
+            <tr>
+              <td>${b.name}</td>
+              <td>${b.author}</td>
+              <td>${b.copies}</td>
+              <td>${b.shelf}</td>
+            </tr>`;
+        });
+        document.getElementById("books").innerHTML = rows;
+      });
+
+    function goBack() {
+      window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>

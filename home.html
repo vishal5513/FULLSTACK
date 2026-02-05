@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Library Dashboard</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 15px 30px;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    /* Container */
+    .container {
+      padding: 30px;
+    }
+
+    /* Search box */
+    .search-box {
+      width: 100%;
+      max-width: 400px;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-bottom: 30px;
+    }
+
+    /* Buttons grid */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .card-btn {
+      padding: 25px;
+      border-radius: 10px;
+      background: white;
+      text-align: center;
+      font-size: 18px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      transition: 0.3s;
+    }
+
+    .card-btn:hover {
+      transform: translateY(-5px);
+      background: #667eea;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    Library Management System
+  </div>
+
+  <!-- Main Content -->
+  <div class="container">
+
+    <input 
+      type="text" 
+      class="search-box" 
+      placeholder="Search book by name..."
+      onkeyup="searchBook(this.value)"
+    >
+
+    <div class="btn-grid">
+      <div class="card-btn" onclick="go('add-book.html')">
+        ➕ Add Book
+      </div>
+
+      <div class="card-btn" onclick="go('issue-book.html')">
+        📤 Issue Book
+      </div>
+
+      <div class="card-btn" onclick="go('pending.html')">
+        ⏳ Not Returned
+      </div>
+
+      <div class="card-btn" onclick="go('available.html')">
+        📚 Available Books
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function go(page) {
+      window.location.href = page;
+    }
+
+    function searchBook(keyword) {
+      if (keyword.length < 2) return;
+
+      fetch("http://localhost:5000/api/books")
+        .then(res => res.json())
+        .then(data => {
+          const result = data.filter(b =>
+            b.name.toLowerCase().includes(keyword.toLowerCase())
+          );
+
+          if (result.length === 0) {
+            alert("Book not available ❌");
+          } else {
+            let info = result.map(b =>
+              `Book: ${b.name}\nCopies: ${b.copies}\nShelf: ${b.shelf}`
+            ).join("\n\n");
+
+            alert(info);
+          }
+        });
+    }
+  </script>
+
+</body>
+</html>

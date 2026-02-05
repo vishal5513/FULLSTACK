@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Login | Library Management</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background: #fff;
+      width: 350px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .card input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    .card button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .login-btn {
+      background: #667eea;
+      color: white;
+    }
+
+    .login-btn:hover {
+      background: #5563d6;
+    }
+
+    .register-btn {
+      background: transparent;
+      color: #667eea;
+      border: 1px solid #667eea;
+      margin-top: 15px;
+    }
+
+    .register-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>Admin Login</h2>
+
+    <input type="text" id="user" placeholder="Enter Username">
+    <input type="password" id="pass" placeholder="Enter Password">
+
+    <button class="login-btn" onclick="login()">Login</button>
+
+    <div class="note">
+      Don't have an account?
+    </div>
+
+    <button class="register-btn" onclick="goRegister()">Go to Register</button>
+  </div>
+
+  <script>
+    function login() {
+      if (!user.value || !pass.value) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      fetch("http://localhost:5000/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: user.value,
+          password: pass.value
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        if (data === "success") {
+          alert("Login Successful ✅");
+          window.location.href = "home.html";
+        } else {
+          alert("Invalid Username or Password ❌");
+        }
+      })
+      .catch(() => {
+        alert("Server error. Try again later.");
+      });
+    }
+
+    function goRegister() {
+      window.location.href = "register.html";
+    }
+  </script>
+
+</body>
+</html>

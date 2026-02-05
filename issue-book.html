@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Issue Book | Library</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 15px 30px;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
+
+    .form-card {
+      background: white;
+      width: 400px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .form-card h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+    }
+
+    .form-card input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    .form-card button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 5px;
+      background: #667eea;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .form-card button:hover {
+      background: #5563d6;
+    }
+
+    .back-btn {
+      margin-top: 15px;
+      width: 100%;
+      background: transparent;
+      border: 1px solid #667eea;
+      color: #667eea;
+    }
+
+    .back-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    Issue Book
+  </div>
+
+  <div class="container">
+    <div class="form-card">
+      <h2>Issue Book to User</h2>
+
+      <input type="text" id="person" placeholder="Person Name">
+      <input type="text" id="book" placeholder="Book Name">
+      <input type="date" id="issueDate">
+      <input type="date" id="returnDate">
+      <input type="number" id="price" placeholder="Price">
+
+      <button onclick="issueBook()">Issue Book</button>
+      <button class="back-btn" onclick="goBack()">⬅ Back to Home</button>
+    </div>
+  </div>
+
+  <script>
+    function issueBook() {
+      if (!person.value || !book.value || !issueDate.value || !returnDate.value) {
+        alert("Please fill all required fields");
+        return;
+      }
+
+      fetch("http://localhost:5000/api/books/issue", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          personName: person.value,
+          bookName: book.value,
+          issueDate: issueDate.value,
+          returnDate: returnDate.value,
+          price: price.value
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert("Book Issued Successfully ✅");
+        person.value = "";
+        book.value = "";
+        issueDate.value = "";
+        returnDate.value = "";
+        price.value = "";
+      });
+    }
+
+    function goBack() {
+      window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>

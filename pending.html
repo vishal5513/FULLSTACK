@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Not Returned Books | Library</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f4f6f9;
+    }
+
+    /* Navbar */
+    .navbar {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      padding: 15px 30px;
+      color: white;
+      font-size: 22px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    /* Table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: center;
+    }
+
+    th {
+      background: #e74c3c;
+      color: white;
+      font-weight: bold;
+    }
+
+    tr:nth-child(even) {
+      background: #f2f2f2;
+    }
+
+    tr:hover {
+      background: #ffecec;
+    }
+
+    .back-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      background: #667eea;
+      color: white;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .back-btn:hover {
+      background: #5563d6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="navbar">
+    Not Returned Books
+  </div>
+
+  <div class="container">
+    <h2>Issued Books Not Yet Returned</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Person Name</th>
+          <th>Book Name</th>
+          <th>Issue Date</th>
+          <th>Return Date</th>
+        </tr>
+      </thead>
+      <tbody id="data"></tbody>
+    </table>
+
+    <button class="back-btn" onclick="goBack()">⬅ Back to Home</button>
+  </div>
+
+  <script>
+    fetch("http://localhost:5000/api/books/pending")
+      .then(res => res.json())
+      .then(data => {
+        let rows = "";
+        data.forEach(d => {
+          rows += `
+            <tr>
+              <td>${d.personName}</td>
+              <td>${d.bookName}</td>
+              <td>${d.issueDate}</td>
+              <td>${d.returnDate}</td>
+            </tr>`;
+        });
+        document.getElementById("data").innerHTML = rows;
+      });
+
+    function goBack() {
+      window.location.href = "home.html";
+    }
+  </script>
+
+</body>
+</html>

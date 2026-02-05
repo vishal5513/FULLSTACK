@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Register | Library Management</title>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      font-family: Arial, sans-serif;
+    }
+
+    .card {
+      background: #fff;
+      width: 350px;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .card h2 {
+      margin-bottom: 20px;
+      color: #333;
+    }
+
+    .card input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 15px;
+    }
+
+    .card button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .register-btn {
+      background: #667eea;
+      color: white;
+    }
+
+    .register-btn:hover {
+      background: #5563d6;
+    }
+
+    .login-btn {
+      background: transparent;
+      color: #667eea;
+      border: 1px solid #667eea;
+      margin-top: 15px;
+    }
+
+    .login-btn:hover {
+      background: #667eea;
+      color: white;
+    }
+
+    .note {
+      margin-top: 15px;
+      font-size: 14px;
+      color: #555;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+    <h2>Admin Register</h2>
+
+    <input type="text" id="user" placeholder="Enter Username">
+    <input type="password" id="pass" placeholder="Enter Password">
+
+    <button class="register-btn" onclick="register()">Register</button>
+
+    <div class="note">
+      Already registered?
+    </div>
+
+    <button class="login-btn" onclick="goLogin()">Go to Login</button>
+  </div>
+
+  <script>
+    function register() {
+      if (!user.value || !pass.value) {
+        alert("Please fill all fields");
+        return;
+      }
+
+      fetch("http://localhost:5000/api/admin/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: user.value,
+          password: pass.value
+        })
+      })
+      .then(res => res.text())
+      .then(data => {
+        alert("Admin Registered Successfully ✅");
+        user.value = "";
+        pass.value = "";
+      })
+      .catch(err => {
+        alert("Error while registering");
+      });
+    }
+
+    function goLogin() {
+      window.location.href = "login.html";
+    }
+  </script>
+
+</body>
+</html>
